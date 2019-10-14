@@ -16,10 +16,12 @@ int main()
 void start()
 {
     string command;
+    vector<string> wow;
     while(true)
     {
         cout << "database > ";
         getline(cin, command);
+        wow.push_back(command);
         for (int i = 0; command[i]!= '\0'; i ++)
         {
             if (command[i] >= 'A' && command[i] <= 'Z')
@@ -31,5 +33,6 @@ void start()
         {
             break;
         }
+
     }
 }
