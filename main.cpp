@@ -20,9 +20,15 @@ void start()
     {
         cout << "database > ";
         getline(cin, command);
+        for (int i = 0; command[i]!= '\0'; i ++)
+        {
+            if (command[i] >= 'A' && command[i] <= 'Z')
+            {
+                command[i] = command[i] + 32;
+            }
+        }
         if (command == "basu add class")
         {
-            cout << "yes";
             break;
         }
     }
