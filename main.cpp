@@ -5,6 +5,33 @@
 
 using namespace std;
 
+vector <Class> Database;
+
+
+struct Date
+{
+    unsigned short int Year;
+    unsigned short int Month;
+    unsigned short int Day;
+};
+
+struct student
+{
+    string Firstname;
+    string Lastname;
+    unsigned long long int ID;
+    Date Birthday;
+    float Grade;
+};
+
+struct class
+{
+    string ClassName;
+    float Average;
+    unsigned short int Capacity;
+    vector <student> Date;
+};
+
 void start();
 
 int main()
