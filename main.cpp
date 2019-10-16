@@ -89,6 +89,22 @@ void start()
         {
 
         }
+        else if (CommandPlace.size() == 2 && CommandPlace[0] == "basu" &&CommandPlace[1] == "help")
+        {
+            cout << "here we have some command that i will tell you what they to do " << endl;
+            cout << "about --basu add class-- : this command add a class to our classes" << endl;
+            cout << "about --basu remove class-- : this command remove a class from our class" << endl;
+            cout << "about --basu add student-- : this command add a student to one of our classes that we choose it" << endl;
+            cout << "about --basu remove student-- : this command remove a studnet from on of our classes that we choose it" << endl;
+            cout << "about --basu select class-- : this command select on of our classes in the select mode for other command" << endl;
+            cout << "about --basu select none-- : this command take our acces of the classes" << endl;
+            cout << "about --basu search-- : this command show a student by search ID or fullname from the selected class" << endl;
+            cout << "about --basu show-- : this command show a selected class or show a special class" << endl;
+            cout << "about --basu sort name-- : this command  sorts students of classes by names" << endl;
+            cout << "about --basu sort ID-- : this command sorts students of classes by ID" << endl;
+            cout << "about --basu save-- : this command save the data of classes in the seperate file" << endl;
+            cout << "about --exit-- : this command quit you from the database of the students" << endl;
+        }
         else if (CommandPlace.size() == 1 && CommandPlace[0] == "exit")
         {
             break;
