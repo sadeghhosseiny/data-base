@@ -18,7 +18,7 @@ void start()
     string command;
     while(true)
     {
-        vector<string> placeCommand;
+        vector<string> CommandPlace;
         cout << "database > ";
         string temp = "";
         getline(cin, command);
@@ -38,15 +38,59 @@ void start()
             }
             else
             {
-                placeCommand.push_back(temp);
+                 CommandPlace.push_back(temp);
 
                 temp = "";
             }
         }
-        if (placeCommand.size() == 3 && placeCommand[0] == "basu" && placeCommand[1] == "add" && placeCommand[2] == "class")
+        if (CommandPlace.size() == 3 && CommandPlace[0] == "basu" && CommandPlace[1] == "add" && CommandPlace[2] == "class")
         {
-            cout << "it's right" << endl;
-            placeCommand.clear();
+            cout << "class added" << endl;
+            CommandPlace.clear();
+        }
+        else if (CommandPlace.size() == 3 && CommandPlace[0] == "basu" && CommandPlace[1] == "remove" && CommandPlace[2] == "class")
+        {
+            cout << "class removed" << endl;
+            CommandPlace.clear();
+        }
+        else if (CommandPlace.size() == 3 && CommandPlace[0] == "basu" && CommandPlace[1] == "add" && CommandPlace[2] == "student")
+        {
+
+        }
+        else if (CommandPlace.size() == 3 && CommandPlace[0] == "basu" && CommandPlace[1] == "remove" && CommandPlace[2] == "student")
+        {
+
+        }
+        else if (CommandPlace.size() == 3 && CommandPlace[0] == "basu" && CommandPlace[1] == "select" && CommandPlace[2] == "class")
+        {
+
+        }
+        else if (CommandPlace.size() == 3 && CommandPlace[0] == "basu" && CommandPlace[1] == "select" && CommandPlace[2] == "none")
+        {
+
+        }
+        else if (CommandPlace.size() == 2 && CommandPlace[0] == "basu" && CommandPlace[1] == "search")
+        {
+
+        }
+        else if (CommandPlace.size() == 2 && CommandPlace[0] == "basu" && CommandPlace[1] == "show")
+        {
+
+        }
+        else if (CommandPlace.size() == 3 && CommandPlace[0] == "basu" && CommandPlace[1] == "sort" && CommandPlace[2] == "name")
+        {
+
+        }
+        else if (CommandPlace.size() == 3 && CommandPlace[0] == "basu" && CommandPlace[1] == "sort" && CommandPlace[2] == "id")
+        {
+
+        }
+        else if (CommandPlace.size() == 2 && CommandPlace[0] == "basu" && CommandPlace[1] == "save")
+        {
+
+        }
+        else if (CommandPlace.size() == 1 && CommandPlace[0] == "exit")
+        {
             break;
         }
     }
