@@ -5,9 +5,6 @@
 
 using namespace std;
 
-vector <Class> Database;
-
-
 struct Date
 {
     unsigned short int Year;
@@ -15,28 +12,74 @@ struct Date
     unsigned short int Day;
 };
 
-struct student
+struct Student
 {
     string Firstname;
     string Lastname;
     unsigned long long int ID;
-    Date Birthday;
+    string Birthday;
     float Grade;
 };
 
-struct class
+struct Class
 {
     string ClassName;
     float Average;
     unsigned short int Capacity;
-    vector <student> Date;
+    vector <Student> Data;
 };
+
+vector <Class> Database;
+
+void SelectClass(string);
+
+void AddClass(string);
+
+void RemoveClass(string);
+
+void AddStudent(string, Date, unsigned long long int, float);
+
+void RemoveStudent(unsigned long long int);
+
+void Search(unsigned long long int);
+
+void Search(string, string);
+
+void ShowClass(string);
+
+void ShowAll();
+
+void SortByName();
+
+void SortByID();
+
+void Save();
 
 void start();
 
 int main()
 {
-    start();
+    string fileName = "L1.basu";
+    ifstream input(fileName.c_str(), ios::beg);
+
+    Class cls;
+    input >> cls.ClassName;
+    input >> cls.Capacity;
+
+    Student stud;
+    for (int i = 0; i < cls.Capacity; i++)
+    {
+        input >> stud.Firstname;
+        input >> stud.Lastname;
+        input >> stud.Birthday;
+        input >> stud.grade;
+        input >> stud.ID
+
+        cls.Data.push_back(stud);
+    }
+    Database.push_back(cls);
+
+    //start();
     return 0;
 }
 
@@ -70,8 +113,9 @@ void start()
                 temp = "";
             }
         }
-        if (CommandPlace.size() == 3 && CommandPlace[0] == "basu" && CommandPlace[1] == "add" && CommandPlace[2] == "class")
+        if (CommandPlace[0] == "basu" && CommandPlace[1] == "add" && CommandPlace[2] == "class")
         {
+            AddClass(CommandPlace[3])
             cout << "class added" << endl;
             CommandPlace.clear();
         }
