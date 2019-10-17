@@ -2,6 +2,7 @@
 #include <cstring>
 #include <vector>
 #include <iomanip>
+#include <fstream>
 
 using namespace std;
 
@@ -17,7 +18,7 @@ struct Student
     string Firstname;
     string Lastname;
     unsigned long long int ID;
-    string Birthday;
+    Date Birthday;
     float Grade;
 };
 
@@ -30,6 +31,7 @@ struct Class
 };
 
 vector <Class> Database;
+
 
 void SelectClass(string);
 
@@ -59,7 +61,7 @@ void start();
 
 int main()
 {
-    string fileName = "L1.basu";
+    /*string fileName = "L1.basu";
     ifstream input(fileName.c_str(), ios::beg);
 
     Class cls;
@@ -77,9 +79,9 @@ int main()
 
         cls.Data.push_back(stud);
     }
-    Database.push_back(cls);
+    Database.push_back(cls);*/
 
-    //start();
+    start();
     return 0;
 }
 
@@ -115,8 +117,7 @@ void start()
         }
         if (CommandPlace[0] == "basu" && CommandPlace[1] == "add" && CommandPlace[2] == "class")
         {
-            AddClass(CommandPlace[3])
-            cout << "class added" << endl;
+            AddClass(CommandPlace[3]);
             CommandPlace.clear();
         }
         else if (CommandPlace.size() == 3 && CommandPlace[0] == "basu" && CommandPlace[1] == "remove" && CommandPlace[2] == "class")
@@ -182,3 +183,50 @@ void start()
         }
     }
 }
+
+void AddClass(string fileName)
+{
+    Class cn;
+    Student st;
+    ifstream AC;
+    AC.open(fileName);
+    getline(AC, cn.ClassName);
+    AC >> cn.Capacity;
+    if (!AC)
+    {
+        cout << "file doesn't created" << endl;
+    }
+    else
+    {
+        cout << "yes!" << endl;
+    }
+    for (int i = 0; i < cn.Capacity; i ++)
+    {
+        string date;
+        AC >> st.Firstname;
+        AC >> st.Lastname;
+        AC >> date;
+        string temp[3];
+        int counter = 0;
+        for (auto j : date)
+        {
+            if (j != '/')
+            {
+                temp[counter] += j;
+            }
+            else
+            {
+                counter ++;
+            }
+        }
+        st.Birthday.Year = stoi(temp[0]);
+        st.Birthday.Month = stoi(temp[1]);
+        st.Birthday.Day = stoi(temp[2]);
+        AC >> st.Grade;
+        AC >> st.ID;
+        cn.Data.push_back(st);
+    }
+    Database.push_back(cn);
+    AC.close();
+}
+
