@@ -122,7 +122,6 @@ void start()
             }
         }
 
-
         if (CommandPlace[0] == "basu" && CommandPlace[1] == "add" && CommandPlace[2] == "class")
         {
             AddClass(CommandPlace[3]);
