@@ -34,6 +34,27 @@ struct Class
 
 vector <Class> Database;
 
+Date SeperateBirthday(string date)
+{
+    Date d;
+    string temp[3];
+    int counter = 0;
+    for (auto j : date)
+    {
+        if (j != '/')
+        {
+            temp[counter] += j;
+        }
+        else
+        {
+            counter ++;
+        }
+    }
+    d.Year = stoi(temp[0]);
+    d.Month = stoi(temp[1]);
+    d.Day = stoi(temp[2]);
+    return d;
+}
 
 void SelectClass(string);
 
@@ -129,12 +150,28 @@ void start()
         }
         else if (CommandPlace[0] == "basu" && CommandPlace[1] == "remove" && CommandPlace[2] == "class")
         {
+            string fullname;
+            getline(cin, fullname);
+
+
             RemoveClass(CommandPlace[3]);
             CommandPlace.clear();
         }
-        else if (CommandPlace.size() == 3 && CommandPlace[0] == "basu" && CommandPlace[1] == "add" && CommandPlace[2] == "student")
+        else if (CommandPlace[0] == "basu" && CommandPlace[1] == "add" && CommandPlace[2] == "student")
         {
+            string fn;
+            string ln;
+            string dt;
+            cout << "enter name" << endl;
+            cin >> fn;
+            cout << "enter lname" << endl;
+            cin >> ln;
+            cout << "enter date" << endl;
+            cin >> dt;
 
+
+            //AddStudent(CommandPlace[3],SeperateBirthday(CommandPlace[4]), );
+            CommandPlace.clear();
         }
         else if (CommandPlace.size() == 3 && CommandPlace[0] == "basu" && CommandPlace[1] == "remove" && CommandPlace[2] == "student")
         {
@@ -214,27 +251,13 @@ void AddClass(string fileName)
         AC >> st.Firstname;
         AC >> st.Lastname;
         AC >> date;
-        string temp[3];
-        int counter = 0;
-        for (auto j : date)
-        {
-            if (j != '/')
-            {
-                temp[counter] += j;
-            }
-            else
-            {
-                counter ++;
-            }
-        }
-        st.Birthday.Year = stoi(temp[0]);
-        st.Birthday.Month = stoi(temp[1]);
-        st.Birthday.Day = stoi(temp[2]);
+        st.Birthday = SeperateBirthday(date);
         AC >> st.Grade;
         AC >> st.ID;
         cn.Data.push_back(st);
     }
     Database.push_back(cn);
+    cout << cn.Data[0].Birthday.Month << endl;
     AC.close();
 }
 
@@ -254,7 +277,6 @@ void SelectClass(string ClsName)
 
 void RemoveClass(string ClsName)
 {
-    Class cls;
     for (auto i = 0; i < Database.size(); i ++ )
     {
         if (Database[i].ClassName == ClsName)
@@ -265,5 +287,18 @@ void RemoveClass(string ClsName)
         }
 
     }
-        cout << "this class wasn't selected" << endl;
+    cout << "this class wasn't selected" << endl;
+}
+
+void AddStudent(string FullName, Date brth, unsigned long long int iD, float avg)
+{
+    /*for (Student sd : Data)
+    {
+        if ((sd.Firstname && sd.Lastname) == FullName && sd.Birthday == brth && sd.Grade == avg && sd.ID == iD)
+        {
+            cout << "Student added" << endl;
+            return;
+        }
+    }*/
+    cout << "Student doesn't added" << endl;
 }
