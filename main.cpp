@@ -6,6 +6,8 @@
 
 using namespace std;
 
+string GlobS = "";
+
 struct Date
 {
     unsigned short int Year;
@@ -94,13 +96,6 @@ void start()
         cout << "database > ";
         string temp = "";
         getline(cin, command);
-             for (int i = 0; command[i] != '\0'; i ++)
-        {
-            if (command[i] >= 'A' && command[i] <= 'Z')
-            {
-                command[i] = command[i] + 32;
-            }
-        }
         command += ' ';
         for (char c : command)
         {
@@ -110,19 +105,31 @@ void start()
             }
             else
             {
-                 CommandPlace.push_back(temp);
+                CommandPlace.push_back(temp);
 
                 temp = "";
             }
         }
+
+        for (int i = 0; i < CommandPlace.size() - 1; i ++)
+        {
+            for (char &j : CommandPlace[i])
+            {
+                if (j >= 'A' && j <= 'Z')
+                {
+                    j += 32;
+                }
+            }
+        }
+
         if (CommandPlace[0] == "basu" && CommandPlace[1] == "add" && CommandPlace[2] == "class")
         {
             AddClass(CommandPlace[3]);
             CommandPlace.clear();
         }
-        else if (CommandPlace.size() == 3 && CommandPlace[0] == "basu" && CommandPlace[1] == "remove" && CommandPlace[2] == "class")
+        else if (CommandPlace[0] == "basu" && CommandPlace[1] == "remove" && CommandPlace[2] == "class")
         {
-            cout << "class removed" << endl;
+            RemoveClass(CommandPlace[3]);
             CommandPlace.clear();
         }
         else if (CommandPlace.size() == 3 && CommandPlace[0] == "basu" && CommandPlace[1] == "add" && CommandPlace[2] == "student")
@@ -133,9 +140,10 @@ void start()
         {
 
         }
-        else if (CommandPlace.size() == 3 && CommandPlace[0] == "basu" && CommandPlace[1] == "select" && CommandPlace[2] == "class")
+        else if (CommandPlace[0] == "basu" && CommandPlace[1] == "select" && CommandPlace[2] == "class")
         {
-
+            SelectClass(CommandPlace[3]);
+            CommandPlace.clear();
         }
         else if (CommandPlace.size() == 3 && CommandPlace[0] == "basu" && CommandPlace[1] == "select" && CommandPlace[2] == "none")
         {
@@ -189,16 +197,16 @@ void AddClass(string fileName)
     Class cn;
     Student st;
     ifstream AC;
-    AC.open(fileName);
-    getline(AC, cn.ClassName);
+    AC.open(fileName.c_str());
+    AC >> cn.ClassName;
     AC >> cn.Capacity;
     if (!AC)
     {
-        cout << "file doesn't created" << endl;
+        cout << "file doesn't added" << endl;
     }
     else
     {
-        cout << "yes!" << endl;
+        cout << "yes!file added" << endl;
     }
     for (int i = 0; i < cn.Capacity; i ++)
     {
@@ -230,3 +238,32 @@ void AddClass(string fileName)
     AC.close();
 }
 
+void SelectClass(string ClsName)
+{
+    for (Class cls : Database)
+    {
+        if (cls.ClassName == ClsName)
+        {
+            GlobS = ClsName;
+            cout << "class '" << ClsName << "' has been selected!" << endl;
+            return;
+        }
+    }
+    cout << "there is no class named : " << ClsName << endl;
+}
+
+void RemoveClass(string ClsName)
+{
+    Class cls;
+    for (auto i = 0; i < Database.size(); i ++ )
+    {
+        if (Database[i].ClassName == ClsName)
+        {
+            Database.erase(Database.begin() + i);
+            cout << "Class removed successfully" << endl;
+            return;
+        }
+
+    }
+        cout << "this class wasn't selected" << endl;
+}
