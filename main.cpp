@@ -86,26 +86,6 @@ void start();
 
 int main()
 {
-    /*string fileName = "L1.basu";
-    ifstream input(fileName.c_str(), ios::beg);
-
-    Class cls;
-    input >> cls.ClassName;
-    input >> cls.Capacity;
-
-    Student stud;
-    for (int i = 0; i < cls.Capacity; i++)
-    {
-        input >> stud.Firstname;
-        input >> stud.Lastname;
-        input >> stud.Birthday;
-        input >> stud.grade;
-        input >> stud.ID
-
-        cls.Data.push_back(stud);
-    }
-    Database.push_back(cls);*/
-
     start();
     return 0;
 }
