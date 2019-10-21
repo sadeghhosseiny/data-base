@@ -56,6 +56,8 @@ Date SeperateBirthday(string date)
     d.Day = stoi(temp[2]);
     return d;
 }
+bool ChangeNameOfClasses(string &Str);
+
 void ChangeLowToUp(string &Str);
 
 void SelectClass(string);
@@ -165,6 +167,7 @@ void start()
         }
         else if (CommandPlace[0] == "basu" && CommandPlace[1] == "select" && CommandPlace[2] == "class")
         {
+            ChangeNameOfClasses(CommandPlace[3]);
             SelectClass(CommandPlace[3]);
             CommandPlace.clear();
         }
@@ -329,4 +332,18 @@ void RemoveStudent(unsigned long long int iD)
 void ChangeLowToUp(string &Str)
 {
     Str.at(0) -= 32;
+}
+
+bool ChangeNameOfClasses(string &Str)
+{
+    Str.at(0) -= 32;
+    for (int i = 0; i < Str.length(); i ++)
+    {
+        if (Str[i] == '_')
+        {
+            Str[i + 1] -= 32;
+            return true;
+        }
+    }
+    return false;
 }
