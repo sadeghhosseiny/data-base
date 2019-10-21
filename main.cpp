@@ -57,6 +57,7 @@ Date SeperateBirthday(string date)
     return d;
 }
 void ChangeLowToUp(string &Str);
+
 void SelectClass(string);
 
 void AddClass(string);
