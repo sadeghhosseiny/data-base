@@ -4,6 +4,7 @@
 #include <iomanip>
 #include <fstream>
 
+
 using namespace std;
 
 string GlobS = "";
@@ -55,7 +56,7 @@ Date SeperateBirthday(string date)
     d.Day = stoi(temp[2]);
     return d;
 }
-
+void ChangeLowToUp(string &Str);
 void SelectClass(string);
 
 void AddClass(string);
@@ -113,6 +114,7 @@ void start()
     string command;
     while(true)
     {
+
         vector<string> CommandPlace;
         cout << "database > ";
         string temp = "";
@@ -132,7 +134,7 @@ void start()
             }
         }
 
-        for (int i = 0; i < CommandPlace.size() - 1; i ++)
+        for (int i = 0; i < CommandPlace.size(); i ++)
         {
             for (char &j : CommandPlace[i])
             {
@@ -145,37 +147,40 @@ void start()
 
         if (CommandPlace[0] == "basu" && CommandPlace[1] == "add" && CommandPlace[2] == "class")
         {
+            ChangeLowToUp(CommandPlace[3]);
             AddClass(CommandPlace[3]);
+
             CommandPlace.clear();
         }
         else if (CommandPlace[0] == "basu" && CommandPlace[1] == "remove" && CommandPlace[2] == "class")
         {
-            string fullname;
-            getline(cin, fullname);
-
-
             RemoveClass(CommandPlace[3]);
             CommandPlace.clear();
         }
         else if (CommandPlace[0] == "basu" && CommandPlace[1] == "add" && CommandPlace[2] == "student")
         {
-            string fn;
-            string ln;
+            string fu;
             string dt;
             cout << "enter name" << endl;
-            cin >> fn;
-            cout << "enter lname" << endl;
-            cin >> ln;
+            getline(cin, fu);
             cout << "enter date" << endl;
             cin >> dt;
+            Date d = SeperateBirthday(dt);
+            float gr;
+            cout << "enter grade" << endl;
+            cin >> gr;
+            unsigned long long int iD;
+            cout << "enter Id" << endl;
 
-
-            //AddStudent(CommandPlace[3],SeperateBirthday(CommandPlace[4]), );
+            cin >> iD;
+            AddStudent(fu, d, iD, gr);
             CommandPlace.clear();
+            cin.get();
         }
-        else if (CommandPlace.size() == 3 && CommandPlace[0] == "basu" && CommandPlace[1] == "remove" && CommandPlace[2] == "student")
+        else if  (CommandPlace[0] == "basu" && CommandPlace[1] == "remove" && CommandPlace[2] == "student")
         {
-
+            RemoveStudent(stoull(CommandPlace[3]));
+            CommandPlace.clear();
         }
         else if (CommandPlace[0] == "basu" && CommandPlace[1] == "select" && CommandPlace[2] == "class")
         {
@@ -222,7 +227,7 @@ void start()
             cout << "about --basu save-- : this command save the data of classes in the seperate file" << endl;
             cout << "about --exit-- : this command quit you from the database of the students" << endl;
         }
-        else if (CommandPlace.size() == 1 && CommandPlace[0] == "exit")
+        else if (CommandPlace[0] == "exit")
         {
             break;
         }
@@ -257,7 +262,6 @@ void AddClass(string fileName)
         cn.Data.push_back(st);
     }
     Database.push_back(cn);
-    cout << cn.Data[0].Birthday.Month << endl;
     AC.close();
 }
 
@@ -292,13 +296,56 @@ void RemoveClass(string ClsName)
 
 void AddStudent(string FullName, Date brth, unsigned long long int iD, float avg)
 {
-    /*for (Student sd : Data)
+    Student st;
+    st.Birthday = brth;
+    st.Grade = iD;
+    st.ID = avg;
+    for (int i = 0; i < FullName.length(); i ++)
     {
-        if ((sd.Firstname && sd.Lastname) == FullName && sd.Birthday == brth && sd.Grade == avg && sd.ID == iD)
+        if (FullName[i] != ' ')
         {
-            cout << "Student added" << endl;
-            return;
+            st.Firstname += FullName[i];
         }
-    }*/
-    cout << "Student doesn't added" << endl;
+        else if (FullName[i] == ' ')
+            for (i; i < FullName[i]; i ++)
+            {
+
+                {
+                    st.Lastname += FullName[i];
+                }
+            }
+    }
+    for (Class &i : Database)
+    {
+        if (GlobS == i.ClassName)
+        {
+            i.Data.push_back(st);
+        }
+    }
+
+}
+
+void RemoveStudent(unsigned long long int iD)
+{
+    for (Class &i : Database)
+    {
+        if (i.ClassName == GlobS)
+        {
+            for (auto j = 0; j < i.Capacity; j ++)
+            {
+                if (i.Data[j].ID == iD)
+                {
+                    i.Data.erase(i.Data.begin() + j);
+                    cout << "Student removed" << endl;
+                    return;
+                }
+            }
+        }
+    }
+    cout << "Student doesn't removed" << endl;
+}
+
+void ChangeLowToUp(string &Str)
+{
+    Str.at(0) -= 32;
 }
