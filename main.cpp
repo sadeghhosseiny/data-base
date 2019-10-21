@@ -56,6 +56,7 @@ Date SeperateBirthday(string date)
     d.Day = stoi(temp[2]);
     return d;
 }
+
 bool ChangeNameOfClasses(string &Str);
 
 void ChangeLowToUp(string &Str);
@@ -173,7 +174,8 @@ void start()
         }
         else if (CommandPlace.size() == 3 && CommandPlace[0] == "basu" && CommandPlace[1] == "select" && CommandPlace[2] == "none")
         {
-
+            GlobS = "";
+            cout << "The class was empty" << endl;
         }
         else if (CommandPlace.size() == 2 && CommandPlace[0] == "basu" && CommandPlace[1] == "search")
         {
