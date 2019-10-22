@@ -124,12 +124,12 @@ void start()
             AddClass(CommandPlace[3]);
             CommandPlace.clear();
         }
-        else if (CommandPlace[0] == "basu" && CommandPlace[1] == "remove" && CommandPlace[2] == "class")
+        else if (FileName(CommandPlace[0]) == "basu" && FileName(CommandPlace[1]) == "remove" && FileName(CommandPlace[2]) == "class")
         {
             RemoveClass(CommandPlace[3]);
             CommandPlace.clear();
         }
-        else if (CommandPlace[0] == "basu" && CommandPlace[1] == "add" && CommandPlace[2] == "student")
+        else if (FileName(CommandPlace[0]) == "basu" && FileName(CommandPlace[1]) == "add" && FileName(CommandPlace[2]) == "student")
         {
             string fu;
             string dt;
@@ -149,43 +149,53 @@ void start()
             CommandPlace.clear();
             cin.get();
         }
-        else if  (CommandPlace[0] == "basu" && CommandPlace[1] == "remove" && CommandPlace[2] == "student")
+        else if  (FileName(CommandPlace[0]) == "basu" && FileName(CommandPlace[1]) == "remove" && FileName(CommandPlace[2]) == "student")
         {
             RemoveStudent(stoull(CommandPlace[3]));
             CommandPlace.clear();
         }
-        else if (CommandPlace[0] == "basu" && CommandPlace[1] == "select" && CommandPlace[2] == "class")
+        else if (FileName(CommandPlace[0]) == "basu" && FileName(CommandPlace[1]) == "select" && FileName(CommandPlace[2]) == "class")
         {
             //ChangeNameOfClasses(CommandPlace[3]);
             SelectClass(CommandPlace[3]);
             CommandPlace.clear();
         }
-        else if (CommandPlace[0] == "basu" && CommandPlace[1] == "select" && CommandPlace[2] == "none")
+        else if (FileName(CommandPlace[0]) == "basu" && FileName(CommandPlace[1]) == "select" && FileName(CommandPlace[2]) == "none")
         {
             GlobS = "";
             cout << "The class was empty" << endl;
         }
-        else if (CommandPlace.size() == 2 && CommandPlace[0] == "basu" && CommandPlace[1] == "search")
+        else if (FileName(CommandPlace[0]) == "basu" && FileName(CommandPlace[1]) == "search")
         {
 
         }
-        else if (CommandPlace[0] == "basu" && CommandPlace[1] == "show")
+        else if (FileName(CommandPlace[0]) == "basu" && FileName(CommandPlace[1]) == "show")
         {
-            ShowClass(CommandPlace[2]);
+            if (CommandPlace.size() == 3)
+            {
+                ShowClass(FileName(CommandPlace[2]));
+                continue;
+            }
+
+            if (GlobS != "")
+                ShowClass(GlobS);
+
+                //ShowAll();
+
         }
-        else if (CommandPlace.size() == 3 && CommandPlace[0] == "basu" && CommandPlace[1] == "sort" && CommandPlace[2] == "name")
+        else if (FileName(CommandPlace[0]) == "basu" && FileName(CommandPlace[1]) == "sort" && FileName(CommandPlace[2]) == "name")
         {
 
         }
-        else if (CommandPlace.size() == 3 && CommandPlace[0] == "basu" && CommandPlace[1] == "sort" && CommandPlace[2] == "id")
+        else if (FileName(CommandPlace[0]) == "basu" && FileName(CommandPlace[1]) == "sort" && FileName(CommandPlace[2]) == "id")
         {
 
         }
-        else if (CommandPlace.size() == 2 && CommandPlace[0] == "basu" && CommandPlace[1] == "save")
+        else if (FileName(CommandPlace[0]) == "basu" && FileName(CommandPlace[1]) == "save")
         {
 
         }
-        else if (CommandPlace.size() == 2 && CommandPlace[0] == "basu" &&CommandPlace[1] == "help")
+        else if (FileName(CommandPlace[0]) == "basu" && FileName(CommandPlace[1]) == "help")
         {
             cout << "here we have some command that i will tell you what they to do " << endl;
             cout << "about --basu add class-- : this command add a class to our classes" << endl;
@@ -323,10 +333,10 @@ void RemoveStudent(unsigned long long int iD)
 
 void ShowClass(string Cname)
 {
-    Student s;
+    cout << "dwADAWDAD";
     for (Class &i : Database)
     {
-        if (Cname == GlobS)
+        if (Cname == i.ClassName)
         {
             cout << i.ClassName << endl;
             cout << i.Capacity << endl;
