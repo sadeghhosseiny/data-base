@@ -164,7 +164,7 @@ void start()
             GlobS = "";
             cout << "The class was empty" << endl;
         }
-        else if (FileName(CommandPlace[0]) == "basu" && FileName(CommandPlace[1]) == "search")
+        else if (CommandPlace.size() == 3 && FileName(CommandPlace[0]) == "basu" && FileName(CommandPlace[1]) == "search")
         {
             if (CommandPlace[2] != "")
             {
@@ -175,6 +175,17 @@ void start()
                 continue;
             }
 
+        }
+        else if (CommandPlace.size() == 4 && FileName(CommandPlace[0]) == "basu" && FileName(CommandPlace[1]) == "search")
+        {
+             if (CommandPlace[2] != "" && CommandPlace[3] != "")
+            {
+                Search(CommandPlace[2], CommandPlace[3]);
+            }
+            else
+            {
+                continue;
+            }
         }
         else if (FileName(CommandPlace[0]) == "basu" && FileName(CommandPlace[1]) == "show")
         {
@@ -377,7 +388,28 @@ void Search(unsigned long long int iD)
             }
         }
     }
-    cout << "your id is wrong " << endl;
+    cout << "id is wrong " << endl;
+}
+
+void Search(string fn, string ln)
+{
+    for (Class &i : Database)
+    {
+        if (i.ClassName == GlobS)
+        {
+            for (int j = 0; j < i.Capacity; j++)
+            {
+                if (fn == i.Data.at(j).Firstname && i.Data.at(j).Lastname == ln)
+                {
+                    cout << i.Data.at(j).Firstname << " " << i.Data.at(j).Lastname << " " << i.Data.at(j).Birthday.Year << "/"
+                         << i.Data.at(j).Birthday.Month << "/" << i.Data.at(j).Birthday.Day << " " <<  i.Data.at(j).Grade << " "
+                         << i.Data.at(j).ID << endl;
+                         return;
+                }
+            }
+        }
+    }
+    cout << "First name and last name are wrong" << endl;
 }
 
 string FileName(string com)
