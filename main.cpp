@@ -101,7 +101,7 @@ void start()
     {
 
         vector<string> CommandPlace;
-        cout << "database > ";
+        cout << "Database > ";
         string temp = "";
         getline(cin, command);
         command += ' ';
@@ -156,7 +156,6 @@ void start()
         }
         else if (FileName(CommandPlace[0]) == "basu" && FileName(CommandPlace[1]) == "select" && FileName(CommandPlace[2]) == "class")
         {
-            //ChangeNameOfClasses(CommandPlace[3]);
             SelectClass(CommandPlace[3]);
             CommandPlace.clear();
         }
@@ -167,6 +166,14 @@ void start()
         }
         else if (FileName(CommandPlace[0]) == "basu" && FileName(CommandPlace[1]) == "search")
         {
+            if (CommandPlace[2] != "")
+            {
+                Search(stoull(CommandPlace[2]));
+            }
+            else
+            {
+                continue;
+            }
 
         }
         else if (FileName(CommandPlace[0]) == "basu" && FileName(CommandPlace[1]) == "show")
@@ -180,7 +187,7 @@ void start()
             if (GlobS != "")
                 ShowClass(GlobS);
 
-                //ShowAll();
+            //ShowAll();
 
         }
         else if (FileName(CommandPlace[0]) == "basu" && FileName(CommandPlace[1]) == "sort" && FileName(CommandPlace[2]) == "name")
@@ -340,16 +347,37 @@ void ShowClass(string Cname)
         {
             cout << i.ClassName << endl;
             cout << i.Capacity << endl;
-                 for (auto j = 0; j < i.Capacity; j ++)
+            for (auto j = 0; j < i.Capacity; j ++)
             {
                 cout << i.Data.at(j).Firstname << " " << i.Data.at(j).Lastname << " " << i.Data.at(j).Birthday.Year
-                << "/" << i.Data.at(j).Birthday.Month << "/" << i.Data.at(j).Birthday.Day << " "
-                << i.Data.at(j).Grade << " " << i.Data.at(j).ID << endl;
+                     << "/" << i.Data.at(j).Birthday.Month << "/" << i.Data.at(j).Birthday.Day << " "
+                     << i.Data.at(j).Grade << " " << i.Data.at(j).ID << endl;
             }
             return;
         }
     }
     cout << "this class wasn't selected" << endl;
+}
+
+void Search(unsigned long long int iD)
+{
+    for (Class &i : Database)
+    {
+        if (i.ClassName == GlobS)
+        {
+            for (auto j = 0; j < i.Capacity; j++)
+            {
+                if (i.Data.at(j).ID == iD)
+                {
+                    cout << i.Data.at(j).Firstname << " " << i.Data.at(j).Lastname << " " << i.Data.at(j).Birthday.Year << "/"
+                         << i.Data.at(j).Birthday.Month << "/" << i.Data.at(j).Birthday.Day << " " <<  i.Data.at(j).Grade << " "
+                         << i.Data.at(j).ID << endl;
+                    return;
+                }
+            }
+        }
+    }
+    cout << "your id is wrong " << endl;
 }
 
 string FileName(string com)
@@ -364,20 +392,3 @@ string FileName(string com)
     return com;
 }
 
-/*void ChangeLowToUp(string  &Str)
-{
-    Str.at(0) -= 32;
-}
-/*bool ChangeNameOfClasses(string &Str)
-{
-    Str.at(0) -= 32;
-    for (int i = 0; i < Str.length(); i ++)
-    {
-        if (Str[i] == '_')
-        {
-            Str[i + 1] -= 32;
-            return true;
-        }
-    }
-    return false;
-}*/
