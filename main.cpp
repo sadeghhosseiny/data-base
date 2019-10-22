@@ -57,9 +57,10 @@ Date SeperateBirthday(string date)
     return d;
 }
 
-bool ChangeNameOfClasses(string &Str);
+//bool ChangeNameOfClasses(string &Str);
 
-void ChangeLowToUp(string &Str);
+//void ChangeLowToUp(string &Str);
+string FileName(string);
 
 void SelectClass(string);
 
@@ -118,22 +119,9 @@ void start()
             }
         }
 
-        for (int i = 0; i < CommandPlace.size(); i ++)
+        if (FileName(CommandPlace[0]) == "basu" && FileName(CommandPlace[1]) == "add" && FileName(CommandPlace[2]) == "class")
         {
-            for (char &j : CommandPlace[i])
-            {
-                if (j >= 'A' && j <= 'Z')
-                {
-                    j += 32;
-                }
-            }
-        }
-
-        if (CommandPlace[0] == "basu" && CommandPlace[1] == "add" && CommandPlace[2] == "class")
-        {
-            ChangeLowToUp(CommandPlace[3]);
             AddClass(CommandPlace[3]);
-
             CommandPlace.clear();
         }
         else if (CommandPlace[0] == "basu" && CommandPlace[1] == "remove" && CommandPlace[2] == "class")
@@ -168,11 +156,11 @@ void start()
         }
         else if (CommandPlace[0] == "basu" && CommandPlace[1] == "select" && CommandPlace[2] == "class")
         {
-            ChangeNameOfClasses(CommandPlace[3]);
+            //ChangeNameOfClasses(CommandPlace[3]);
             SelectClass(CommandPlace[3]);
             CommandPlace.clear();
         }
-        else if (CommandPlace.size() == 3 && CommandPlace[0] == "basu" && CommandPlace[1] == "select" && CommandPlace[2] == "none")
+        else if (CommandPlace[0] == "basu" && CommandPlace[1] == "select" && CommandPlace[2] == "none")
         {
             GlobS = "";
             cout << "The class was empty" << endl;
@@ -181,9 +169,9 @@ void start()
         {
 
         }
-        else if (CommandPlace.size() == 2 && CommandPlace[0] == "basu" && CommandPlace[1] == "show")
+        else if (CommandPlace[0] == "basu" && CommandPlace[1] == "show")
         {
-
+            ShowClass(CommandPlace[2]);
         }
         else if (CommandPlace.size() == 3 && CommandPlace[0] == "basu" && CommandPlace[1] == "sort" && CommandPlace[2] == "name")
         {
@@ -223,11 +211,10 @@ void start()
 void AddClass(string fileName)
 {
     Class cn;
+    const char * fName = fileName.c_str();
     Student st;
     ifstream AC;
-    AC.open(fileName.c_str());
-    AC >> cn.ClassName;
-    AC >> cn.Capacity;
+    AC.open(fName);
     if (!AC)
     {
         cout << "file doesn't added" << endl;
@@ -235,18 +222,21 @@ void AddClass(string fileName)
     else
     {
         cout << "yes!file added" << endl;
+        AC >> cn.ClassName;
+        AC >> cn.Capacity;
+        for (int i = 0; i < cn.Capacity; i ++)
+        {
+            string date;
+            AC >> st.Firstname;
+            AC >> st.Lastname;
+            AC >> date;
+            st.Birthday = SeperateBirthday(date);
+            AC >> st.Grade;
+            AC >> st.ID;
+            cn.Data.push_back(st);
+        }
     }
-    for (int i = 0; i < cn.Capacity; i ++)
-    {
-        string date;
-        AC >> st.Firstname;
-        AC >> st.Lastname;
-        AC >> date;
-        st.Birthday = SeperateBirthday(date);
-        AC >> st.Grade;
-        AC >> st.ID;
-        cn.Data.push_back(st);
-    }
+
     Database.push_back(cn);
     AC.close();
 }
@@ -331,12 +321,44 @@ void RemoveStudent(unsigned long long int iD)
     cout << "Student doesn't removed" << endl;
 }
 
-void ChangeLowToUp(string &Str)
+void ShowClass(string Cname)
+{
+    Student s;
+    for (Class &i : Database)
+    {
+        if (Cname == GlobS)
+        {
+            cout << i.ClassName << endl;
+            cout << i.Capacity << endl;
+                 for (auto j = 0; j < i.Capacity; j ++)
+            {
+                cout << i.Data.at(j).Firstname << " " << i.Data.at(j).Lastname << " " << i.Data.at(j).Birthday.Year
+                << "/" << i.Data.at(j).Birthday.Month << "/" << i.Data.at(j).Birthday.Day << " "
+                << i.Data.at(j).Grade << " " << i.Data.at(j).ID << endl;
+            }
+            return;
+        }
+    }
+    cout << "this class wasn't selected" << endl;
+}
+
+string FileName(string com)
+{
+    for (int i = 0; i < com.length(); i ++)
+    {
+        if (com[i] >= 'A' && com[i] <= 'Z')
+        {
+            com[i] += 32;
+        }
+    }
+    return com;
+}
+
+/*void ChangeLowToUp(string  &Str)
 {
     Str.at(0) -= 32;
 }
-
-bool ChangeNameOfClasses(string &Str)
+/*bool ChangeNameOfClasses(string &Str)
 {
     Str.at(0) -= 32;
     for (int i = 0; i < Str.length(); i ++)
@@ -348,4 +370,4 @@ bool ChangeNameOfClasses(string &Str)
         }
     }
     return false;
-}
+}*/
