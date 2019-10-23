@@ -178,7 +178,7 @@ void start()
         }
         else if (CommandPlace.size() == 4 && FileName(CommandPlace[0]) == "basu" && FileName(CommandPlace[1]) == "search")
         {
-             if (CommandPlace[2] != "" && CommandPlace[3] != "")
+            if (CommandPlace[2] != "" && CommandPlace[3] != "")
             {
                 Search(CommandPlace[2], CommandPlace[3]);
             }
@@ -191,14 +191,16 @@ void start()
         {
             if (CommandPlace.size() == 3)
             {
-                ShowClass(FileName(CommandPlace[2]));
+                ShowClass(CommandPlace[2]);
                 continue;
             }
 
             if (GlobS != "")
                 ShowClass(GlobS);
-
-            //ShowAll();
+            else
+            {
+                ShowAll();
+            }
 
         }
         else if (FileName(CommandPlace[0]) == "basu" && FileName(CommandPlace[1]) == "sort" && FileName(CommandPlace[2]) == "name")
@@ -246,10 +248,12 @@ void AddClass(string fileName)
     if (!AC)
     {
         cout << "file doesn't added" << endl;
+
     }
+
     else
     {
-        cout << "yes!file added" << endl;
+        cout << "file added" << endl;
         AC >> cn.ClassName;
         AC >> cn.Capacity;
         for (int i = 0; i < cn.Capacity; i ++)
@@ -262,6 +266,7 @@ void AddClass(string fileName)
             AC >> st.Grade;
             AC >> st.ID;
             cn.Data.push_back(st);
+
         }
     }
 
@@ -351,7 +356,6 @@ void RemoveStudent(unsigned long long int iD)
 
 void ShowClass(string Cname)
 {
-    cout << "dwADAWDAD";
     for (Class &i : Database)
     {
         if (Cname == i.ClassName)
@@ -368,6 +372,24 @@ void ShowClass(string Cname)
         }
     }
     cout << "this class wasn't selected" << endl;
+}
+
+void ShowAll()
+{
+    for (Class &i : Database)
+    {
+        cout << i.ClassName << endl;
+        cout << i.Capacity << endl;
+        for (int j = 0; j < i.Capacity; j++)
+        {
+
+            cout << i.Data.at(j).Firstname << " " << i.Data.at(j).Lastname << " " << i.Data.at(j).Birthday.Year
+                 << "/" << i.Data.at(j).Birthday.Month << "/" << i.Data.at(j).Birthday.Day << " "
+                 << i.Data.at(j).Grade << " " << i.Data.at(j).ID << endl;
+        }
+
+    }
+    return;
 }
 
 void Search(unsigned long long int iD)
@@ -404,7 +426,7 @@ void Search(string fn, string ln)
                     cout << i.Data.at(j).Firstname << " " << i.Data.at(j).Lastname << " " << i.Data.at(j).Birthday.Year << "/"
                          << i.Data.at(j).Birthday.Month << "/" << i.Data.at(j).Birthday.Day << " " <<  i.Data.at(j).Grade << " "
                          << i.Data.at(j).ID << endl;
-                         return;
+                    return;
                 }
             }
         }
