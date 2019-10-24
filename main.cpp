@@ -96,7 +96,6 @@ void start()
     string command;
     while(true)
     {
-
         vector<string> CommandPlace;
         cout << "Database > ";
         if (GlobS != "")
@@ -119,6 +118,7 @@ void start()
                 temp = "";
             }
         }
+
 
         if (FileName(CommandPlace[0]) == "basu" && FileName(CommandPlace[1]) == "add" && FileName(CommandPlace[2]) == "class")
         {
@@ -220,7 +220,15 @@ void start()
         }
         else if (FileName(CommandPlace[0]) == "basu" && FileName(CommandPlace[1]) == "sort" && FileName(CommandPlace[2]) == "id")
         {
-
+            if (GlobS != "")
+            {
+                SortByID();
+            }
+            else if (GlobS == "")
+            {
+                SortByID();
+            }
+            CommandPlace.clear();
         }
         else if (FileName(CommandPlace[0]) == "basu" && FileName(CommandPlace[1]) == "save")
         {
@@ -260,27 +268,32 @@ void AddClass(string fileName)
         cout << "Class name is wrong" << endl;
         return;
     }
-
-    else
+    AC >> cn.ClassName;
+    for (Class &cls : Database)
     {
-        cout << "file added" << endl;
-        AC >> cn.ClassName;
-        AC >> cn.Capacity;
-        for (int i = 0; i < cn.Capacity; i ++)
+        if (cls.ClassName == cn.ClassName)
         {
-            string date;
-            AC >> st.Firstname;
-            AC >> st.Lastname;
-            AC >> date;
-            st.Birthday = SeperateBirthday(date);
-            AC >> st.Grade;
-            AC >> st.ID;
-            cn.Data.push_back(st);
-
+            cout << "this class was added befor" << endl;
+            return;
         }
+    }
+    AC >> cn.Capacity;
+    for (int i = 0; i < cn.Capacity; i ++)
+    {
+        string date;
+        AC >> st.Firstname;
+        AC >> st.Lastname;
+        AC >> date;
+        st.Birthday = SeperateBirthday(date);
+        AC >> st.Grade;
+        AC >> st.ID;
+        cn.Data.push_back(st);
+
     }
 
     Database.push_back(cn);
+
+    cout << "file added" << endl;
     AC.close();
 }
 
@@ -460,7 +473,7 @@ void SortByName()
                     }
                 }
             }
-            cout << GlobS << " " << "sorted" << endl;
+            cout << GlobS << " " << "sorted by name" << endl;
         }
         else if (GlobS == "")
         {
@@ -474,12 +487,48 @@ void SortByName()
                     }
                 }
             }
-            cout << cl.ClassName << " " <<"sorted" << endl;
+            cout << cl.ClassName << " " <<"sorted by name" << endl;
         }
 
     }
 
 }
+
+void SortByID()
+{
+    for (Class &cl : Database)
+    {
+        if (cl.ClassName == GlobS)
+        {
+            for (int i = 0; i < (cl.Capacity) - 1; i++)
+            {
+                for (int j = i + 1; j < cl.Capacity; j++)
+                {
+                    if (cl.Data.at(i).ID > cl.Data.at(j).ID)
+                    {
+                        swap(cl.Data.at(i), cl.Data.at(j));
+                    }
+                }
+            }
+            cout << GlobS << " " << "sorted by ID" << endl;
+        }
+        else if (GlobS == "")
+        {
+            for (int i = 0; i < cl.Capacity - 1; i++)
+            {
+                for (int j = i + 1; j < cl.Capacity; j++)
+                {
+                    if (cl.Data.at(i).ID > cl.Data.at(j).ID)
+                    {
+                        swap(cl.Data.at(i), cl.Data.at(j));
+                    }
+                }
+            }
+            cout << cl.ClassName << " " << "sorted by ID" << endl;
+        }
+    }
+}
+
 string FileName(string com)
 {
     for (int i = 0; i < com.length(); i ++)
