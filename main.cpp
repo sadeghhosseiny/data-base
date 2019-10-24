@@ -57,7 +57,9 @@ Date SeperateBirthday(string date)
     return d;
 }
 
-string FileName(string);
+string SensitiveFileName(string);
+
+string SaveFileName();
 
 void SelectClass(string);
 
@@ -120,17 +122,17 @@ void start()
         }
 
 
-        if (FileName(CommandPlace[0]) == "basu" && FileName(CommandPlace[1]) == "add" && FileName(CommandPlace[2]) == "class")
+        if (SensitiveFileName(CommandPlace[0]) == "basu" && SensitiveFileName(CommandPlace[1]) == "add" && SensitiveFileName(CommandPlace[2]) == "class")
         {
             AddClass(CommandPlace[3]);
             CommandPlace.clear();
         }
-        else if (FileName(CommandPlace[0]) == "basu" && FileName(CommandPlace[1]) == "remove" && FileName(CommandPlace[2]) == "class")
+        else if (SensitiveFileName(CommandPlace[0]) == "basu" && SensitiveFileName(CommandPlace[1]) == "remove" && SensitiveFileName(CommandPlace[2]) == "class")
         {
             RemoveClass(CommandPlace[3]);
             CommandPlace.clear();
         }
-        else if (FileName(CommandPlace[0]) == "basu" && FileName(CommandPlace[1]) == "add" && FileName(CommandPlace[2]) == "student")
+        else if (SensitiveFileName(CommandPlace[0]) == "basu" && SensitiveFileName(CommandPlace[1]) == "add" && SensitiveFileName(CommandPlace[2]) == "student")
         {
             string fu;
             string dt;
@@ -150,23 +152,23 @@ void start()
             CommandPlace.clear();
             cin.get();
         }
-        else if  (FileName(CommandPlace[0]) == "basu" && FileName(CommandPlace[1]) == "remove" && FileName(CommandPlace[2]) == "student")
+        else if  (SensitiveFileName(CommandPlace[0]) == "basu" && SensitiveFileName(CommandPlace[1]) == "remove" && SensitiveFileName(CommandPlace[2]) == "student")
         {
             RemoveStudent(stoull(CommandPlace[3]));
             CommandPlace.clear();
         }
-        else if (FileName(CommandPlace[0]) == "basu" && FileName(CommandPlace[1]) == "select" && FileName(CommandPlace[2]) == "class")
+        else if (SensitiveFileName(CommandPlace[0]) == "basu" && SensitiveFileName(CommandPlace[1]) == "select" && SensitiveFileName(CommandPlace[2]) == "class")
         {
             SelectClass(CommandPlace[3]);
             CommandPlace.clear();
         }
-        else if (FileName(CommandPlace[0]) == "basu" && FileName(CommandPlace[1]) == "select" && FileName(CommandPlace[2]) == "none")
+        else if (SensitiveFileName(CommandPlace[0]) == "basu" && SensitiveFileName(CommandPlace[1]) == "select" && SensitiveFileName(CommandPlace[2]) == "none")
         {
             GlobS = "";
             cout << "The class was empty" << endl;
             CommandPlace.clear();
         }
-        else if (CommandPlace.size() == 3 && FileName(CommandPlace[0]) == "basu" && FileName(CommandPlace[1]) == "search")
+        else if (CommandPlace.size() == 3 && SensitiveFileName(CommandPlace[0]) == "basu" && SensitiveFileName(CommandPlace[1]) == "search")
         {
             if (CommandPlace[2] != "")
             {
@@ -178,7 +180,7 @@ void start()
             }
             CommandPlace.clear();
         }
-        else if (CommandPlace.size() == 4 && FileName(CommandPlace[0]) == "basu" && FileName(CommandPlace[1]) == "search")
+        else if (CommandPlace.size() == 4 && SensitiveFileName(CommandPlace[0]) == "basu" && SensitiveFileName(CommandPlace[1]) == "search")
         {
             if (CommandPlace[2] != "" && CommandPlace[3] != "")
             {
@@ -190,7 +192,7 @@ void start()
             }
             CommandPlace.clear();
         }
-        else if (FileName(CommandPlace[0]) == "basu" && FileName(CommandPlace[1]) == "show")
+        else if (SensitiveFileName(CommandPlace[0]) == "basu" && SensitiveFileName(CommandPlace[1]) == "show")
         {
             if (CommandPlace.size() == 3)
             {
@@ -206,7 +208,7 @@ void start()
             }
             CommandPlace.clear();
         }
-        else if (FileName(CommandPlace[0]) == "basu" && FileName(CommandPlace[1]) == "sort" && FileName(CommandPlace[2]) == "name")
+        else if (SensitiveFileName(CommandPlace[0]) == "basu" && SensitiveFileName(CommandPlace[1]) == "sort" && SensitiveFileName(CommandPlace[2]) == "name")
         {
             if (GlobS != "")
             {
@@ -218,7 +220,7 @@ void start()
             }
             CommandPlace.clear();
         }
-        else if (FileName(CommandPlace[0]) == "basu" && FileName(CommandPlace[1]) == "sort" && FileName(CommandPlace[2]) == "id")
+        else if (SensitiveFileName(CommandPlace[0]) == "basu" && SensitiveFileName(CommandPlace[1]) == "sort" && SensitiveFileName(CommandPlace[2]) == "id")
         {
             if (GlobS != "")
             {
@@ -230,11 +232,11 @@ void start()
             }
             CommandPlace.clear();
         }
-        else if (FileName(CommandPlace[0]) == "basu" && FileName(CommandPlace[1]) == "save")
+        else if (SensitiveFileName(CommandPlace[0]) == "basu" && SensitiveFileName(CommandPlace[1]) == "save")
         {
-
+            Save();
         }
-        else if (FileName(CommandPlace[0]) == "basu" && FileName(CommandPlace[1]) == "help")
+        else if (SensitiveFileName(CommandPlace[0]) == "basu" && SensitiveFileName(CommandPlace[1]) == "help")
         {
             cout << "here we have some command that i will tell you what they to do " << endl;
             cout << "about --basu add class-- : this command add a class to our classes" << endl;
@@ -250,7 +252,7 @@ void start()
             cout << "about --basu save-- : this command save the data of classes in the seperate file" << endl;
             cout << "about --exit-- : this command quit you from the database of the students" << endl;
         }
-        else if (FileName(CommandPlace[0]) == "exit")
+        else if (SensitiveFileName(CommandPlace[0]) == "exit")
         {
             break;
         }
@@ -281,11 +283,14 @@ void AddClass(string fileName)
     for (int i = 0; i < cn.Capacity; i ++)
     {
         string date;
+        unsigned long long int GradeSum;
         AC >> st.Firstname;
         AC >> st.Lastname;
         AC >> date;
         st.Birthday = SeperateBirthday(date);
         AC >> st.Grade;
+        GradeSum += st.Grade;
+        cn.Average = GradeSum / cn.Capacity;
         AC >> st.ID;
         cn.Data.push_back(st);
 
@@ -529,7 +534,36 @@ void SortByID()
     }
 }
 
-string FileName(string com)
+void Save()
+{
+
+    for (Class &cls : Database)
+    {
+        ofstream file(cls.ClassName.c_str());
+        file << cls.ClassName << endl;
+        file << cls.Capacity << endl;
+        file << cls.Average << endl;
+        for (int i = 0; i < cls.Capacity; i++)
+        {
+            file << cls.Data.at(i).Firstname << " " << cls.Data.at(i).Lastname << " " << cls.Data.at(i).Grade << " " << cls.Data.at(i).Birthday.Year
+            << "/" << cls.Data.at(i).Birthday.Month << "/" << cls.Data.at(i).Birthday.Day << " " << cls.Data.at(i).ID << endl;
+        }
+        file.close();
+    }
+}
+
+string SaveFileName()
+{
+    for (int i = 0; i < 5; i++)
+    {
+        string a = "o";
+        a += i;
+        a += ".basu";
+        return a;
+    }
+}
+
+string SensitiveFileName(string com)
 {
     for (int i = 0; i < com.length(); i ++)
     {
