@@ -57,9 +57,6 @@ Date SeperateBirthday(string date)
     return d;
 }
 
-//bool ChangeNameOfClasses(string &Str);
-
-//void ChangeLowToUp(string &Str);
 string FileName(string);
 
 void SelectClass(string);
@@ -102,6 +99,10 @@ void start()
 
         vector<string> CommandPlace;
         cout << "Database > ";
+        if (GlobS != "")
+        {
+            cout << GlobS << " >";
+        }
         string temp = "";
         getline(cin, command);
         command += ' ';
@@ -163,6 +164,7 @@ void start()
         {
             GlobS = "";
             cout << "The class was empty" << endl;
+            CommandPlace.clear();
         }
         else if (CommandPlace.size() == 3 && FileName(CommandPlace[0]) == "basu" && FileName(CommandPlace[1]) == "search")
         {
@@ -174,7 +176,7 @@ void start()
             {
                 continue;
             }
-
+            CommandPlace.clear();
         }
         else if (CommandPlace.size() == 4 && FileName(CommandPlace[0]) == "basu" && FileName(CommandPlace[1]) == "search")
         {
@@ -186,6 +188,7 @@ void start()
             {
                 continue;
             }
+            CommandPlace.clear();
         }
         else if (FileName(CommandPlace[0]) == "basu" && FileName(CommandPlace[1]) == "show")
         {
@@ -195,17 +198,25 @@ void start()
                 continue;
             }
 
-            if (GlobS != "")
+            else if ( CommandPlace.size() == 2 && GlobS != "")
                 ShowClass(GlobS);
-            else
+            else if (CommandPlace.size() == 2 && GlobS == "")
             {
                 ShowAll();
             }
-
+            CommandPlace.clear();
         }
         else if (FileName(CommandPlace[0]) == "basu" && FileName(CommandPlace[1]) == "sort" && FileName(CommandPlace[2]) == "name")
         {
-
+            if (GlobS != "")
+            {
+                SortByName();
+            }
+            else if (GlobS == "")
+            {
+                SortByName();
+            }
+            CommandPlace.clear();
         }
         else if (FileName(CommandPlace[0]) == "basu" && FileName(CommandPlace[1]) == "sort" && FileName(CommandPlace[2]) == "id")
         {
@@ -231,7 +242,7 @@ void start()
             cout << "about --basu save-- : this command save the data of classes in the seperate file" << endl;
             cout << "about --exit-- : this command quit you from the database of the students" << endl;
         }
-        else if (CommandPlace[0] == "exit")
+        else if (FileName(CommandPlace[0]) == "exit")
         {
             break;
         }
@@ -241,14 +252,13 @@ void start()
 void AddClass(string fileName)
 {
     Class cn;
-    const char * fName = fileName.c_str();
     Student st;
     ifstream AC;
-    AC.open(fName);
+    AC.open(fileName.c_str());
     if (!AC)
     {
-        cout << "file doesn't added" << endl;
-
+        cout << "Class name is wrong" << endl;
+        return;
     }
 
     else
@@ -434,6 +444,42 @@ void Search(string fn, string ln)
     cout << "First name and last name are wrong" << endl;
 }
 
+void SortByName()
+{
+    for (Class &cl : Database)
+    {
+        if (GlobS == cl.ClassName)
+        {
+            for (int i = 0; i < (cl.Capacity) - 1; i++)
+            {
+                for (int j = i + 1; j < cl.Capacity; j++)
+                {
+                    if (cl.Data.at(i).Firstname > cl.Data.at(j).Firstname)
+                    {
+                        swap(cl.Data.at(i), cl.Data.at(j));
+                    }
+                }
+            }
+            cout << GlobS << " " << "sorted" << endl;
+        }
+        else if (GlobS == "")
+        {
+            for (int i = 0; i < (cl.Capacity) - 1; i++)
+            {
+                for (int j = i + 1; j < cl.Capacity; j++)
+                {
+                    if (cl.Data.at(i).Firstname > cl.Data.at(j).Firstname)
+                    {
+                        swap(cl.Data.at(i), cl.Data.at(j));
+                    }
+                }
+            }
+            cout << cl.ClassName << " " <<"sorted" << endl;
+        }
+
+    }
+
+}
 string FileName(string com)
 {
     for (int i = 0; i < com.length(); i ++)
