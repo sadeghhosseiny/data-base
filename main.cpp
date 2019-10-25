@@ -51,6 +51,7 @@ Date SeperateBirthday(string date)
             counter ++;
         }
     }
+
     d.Year = stoi(temp[0]);
     d.Month = stoi(temp[1]);
     d.Day = stoi(temp[2]);
@@ -59,7 +60,7 @@ Date SeperateBirthday(string date)
 
 string SensitiveFileName(string);
 
-string SaveFileName();
+float Avg(const Class &);
 
 void SelectClass(string);
 
@@ -96,13 +97,16 @@ int main()
 void start()
 {
     string command;
+    vector<string> CommandPlace;
     while(true)
     {
-        vector<string> CommandPlace;
-        cout << "Database > ";
-        if (GlobS != "")
+        if (CommandPlace.size() == 0)
         {
-            cout << GlobS << " >";
+            cout << "Database > ";
+            if (GlobS != "")
+            {
+                cout << GlobS << " >";
+            }
         }
         string temp = "";
         getline(cin, command);
@@ -136,17 +140,25 @@ void start()
         {
             string fu;
             string dt;
-            cout << "enter name" << endl;
+            cout << "enter first name and last name" << endl;
             getline(cin, fu);
             cout << "enter date" << endl;
             cin >> dt;
-            Date d = SeperateBirthday(dt);
+            Date d;
+            try
+            {
+                d = SeperateBirthday(dt);
+            }
+            catch (...)
+            {
+                cout << "You messed up!" << endl;
+                continue;
+            }
             float gr;
             cout << "enter grade" << endl;
             cin >> gr;
             unsigned long long int iD;
             cout << "enter Id" << endl;
-
             cin >> iD;
             AddStudent(fu, d, iD, gr);
             CommandPlace.clear();
@@ -154,7 +166,14 @@ void start()
         }
         else if  (SensitiveFileName(CommandPlace[0]) == "basu" && SensitiveFileName(CommandPlace[1]) == "remove" && SensitiveFileName(CommandPlace[2]) == "student")
         {
-            RemoveStudent(stoull(CommandPlace[3]));
+            if (CommandPlace.size() == 4)
+            {
+                RemoveStudent(stoull(CommandPlace[3]));
+            }
+            else
+            {
+                cout << "enter ID" << endl;
+            }
             CommandPlace.clear();
         }
         else if (SensitiveFileName(CommandPlace[0]) == "basu" && SensitiveFileName(CommandPlace[1]) == "select" && SensitiveFileName(CommandPlace[2]) == "class")
@@ -235,6 +254,7 @@ void start()
         else if (SensitiveFileName(CommandPlace[0]) == "basu" && SensitiveFileName(CommandPlace[1]) == "save")
         {
             Save();
+            CommandPlace.clear();
         }
         else if (SensitiveFileName(CommandPlace[0]) == "basu" && SensitiveFileName(CommandPlace[1]) == "help")
         {
@@ -251,10 +271,16 @@ void start()
             cout << "about --basu sort ID-- : this command sorts students of classes by ID" << endl;
             cout << "about --basu save-- : this command save the data of classes in the seperate file" << endl;
             cout << "about --exit-- : this command quit you from the database of the students" << endl;
+            CommandPlace.clear();
         }
         else if (SensitiveFileName(CommandPlace[0]) == "exit")
         {
             break;
+        }
+        else
+        {
+            cout << "We don't have thisd command" << endl;
+            CommandPlace.clear();
         }
     }
 }
@@ -283,7 +309,7 @@ void AddClass(string fileName)
     for (int i = 0; i < cn.Capacity; i ++)
     {
         string date;
-        unsigned long long int GradeSum;
+        float GradeSum;
         AC >> st.Firstname;
         AC >> st.Lastname;
         AC >> date;
@@ -328,15 +354,15 @@ void RemoveClass(string ClsName)
         }
 
     }
-    cout << "this class wasn't selected" << endl;
+    cout << "we don't have this class" << endl;
 }
 
 void AddStudent(string FullName, Date brth, unsigned long long int iD, float avg)
 {
     Student st;
     st.Birthday = brth;
-    st.Grade = iD;
-    st.ID = avg;
+    st.Grade = avg;
+    st.ID = iD;
     for (int i = 0; i < FullName.length(); i ++)
     {
         if (FullName[i] != ' ')
@@ -357,6 +383,8 @@ void AddStudent(string FullName, Date brth, unsigned long long int iD, float avg
         if (GlobS == i.ClassName)
         {
             i.Data.push_back(st);
+            i.Capacity ++;
+            i.Average = Avg(i);
         }
     }
 
@@ -373,6 +401,8 @@ void RemoveStudent(unsigned long long int iD)
                 if (i.Data[j].ID == iD)
                 {
                     i.Data.erase(i.Data.begin() + j);
+                    i.Capacity --;
+                    i.Average = Avg(i);
                     cout << "Student removed" << endl;
                     return;
                 }
@@ -390,6 +420,7 @@ void ShowClass(string Cname)
         {
             cout << i.ClassName << endl;
             cout << i.Capacity << endl;
+            cout << i.Average << endl;
             for (auto j = 0; j < i.Capacity; j ++)
             {
                 cout << i.Data.at(j).Firstname << " " << i.Data.at(j).Lastname << " " << i.Data.at(j).Birthday.Year
@@ -536,33 +567,55 @@ void SortByID()
 
 void Save()
 {
-
-    for (Class &cls : Database)
-    {
-        ofstream file(cls.ClassName.c_str());
-        file << cls.ClassName << endl;
-        file << cls.Capacity << endl;
-        file << cls.Average << endl;
-        for (int i = 0; i < cls.Capacity; i++)
+    if (GlobS != "")
+        for (Class &cls : Database)
         {
-            file << cls.Data.at(i).Firstname << " " << cls.Data.at(i).Lastname << " " << cls.Data.at(i).Grade << " " << cls.Data.at(i).Birthday.Year
-            << "/" << cls.Data.at(i).Birthday.Month << "/" << cls.Data.at(i).Birthday.Day << " " << cls.Data.at(i).ID << endl;
+            if (cls.ClassName == GlobS)
+            {
+                ofstream file(cls.ClassName.c_str());
+                file << cls.ClassName << endl;
+                file << cls.Capacity << endl;
+                file << cls.Average << endl;
+                for (int i = 0; i < cls.Capacity; i++)
+                {
+                    file << cls.Data.at(i).Firstname << " " << cls.Data.at(i).Lastname << " " << cls.Data.at(i).Grade << " " << cls.Data.at(i).Birthday.Year
+                         << "/" << cls.Data.at(i).Birthday.Month << "/" << cls.Data.at(i).Birthday.Day << " " << cls.Data.at(i).ID << endl;
+                }
+                cout << "Everything saved" << endl;
+                file.close();
+            }
         }
-        file.close();
-    }
-}
-
-string SaveFileName()
-{
-    for (int i = 0; i < 5; i++)
+    if (GlobS == "")
     {
-        string a = "o";
-        a += i;
-        a += ".basu";
-        return a;
+        for (Class &cls : Database)
+        {
+            ofstream file(cls.ClassName.c_str());
+            file << cls.ClassName << endl;
+            file << cls.Capacity << endl;
+            file << cls.Average << endl;
+            for (int i = 0; i < cls.Capacity; i++)
+            {
+                file << cls.Data.at(i).Firstname << " " << cls.Data.at(i).Lastname << " " << cls.Data.at(i).Grade << " " << cls.Data.at(i).Birthday.Year
+                     << "/" << cls.Data.at(i).Birthday.Month << "/" << cls.Data.at(i).Birthday.Day << " " << cls.Data.at(i).ID << endl;
+            }
+            file.close();
+
+        }
+        cout << "Everything saved" << endl;
+
     }
 }
 
+float Avg(const Class &i)
+{
+    float sum = 0;
+    float Avg;
+    for (const Student &j : i.Data)
+    {
+        sum += j.Grade;
+    }
+    return sum / i.Capacity;
+}
 string SensitiveFileName(string com)
 {
     for (int i = 0; i < com.length(); i ++)
