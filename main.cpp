@@ -7,8 +7,10 @@
 
 using namespace std;
 
+//a global string for select class and other work
 string GlobS = "";
 
+//structs
 struct Date
 {
     unsigned short int Year;
@@ -33,8 +35,10 @@ struct Class
     vector <Student> Data;
 };
 
+//a vector that all of the classes push_back in it
 vector <Class> Database;
 
+//a function that seperate date of birthday
 Date SeperateBirthday(string date)
 {
     Date d;
@@ -57,6 +61,10 @@ Date SeperateBirthday(string date)
     d.Day = stoi(temp[2]);
     return d;
 }
+
+//functions
+
+string Rank();
 
 string SensitiveFileName(string);
 
@@ -96,7 +104,9 @@ int main()
 
 void start()
 {
+    //we get commands with this
     string command;
+    //a vector for push_back commands
     vector<string> CommandPlace;
     while(true)
     {
@@ -111,6 +121,7 @@ void start()
         string temp = "";
         getline(cin, command);
         command += ' ';
+        //push_back commands by space
         for (char c : command)
         {
             if (c != ' ')
@@ -124,8 +135,7 @@ void start()
                 temp = "";
             }
         }
-
-
+        //commands
         if (SensitiveFileName(CommandPlace[0]) == "basu" && SensitiveFileName(CommandPlace[1]) == "add" && SensitiveFileName(CommandPlace[2]) == "class")
         {
             AddClass(CommandPlace[3]);
@@ -138,6 +148,7 @@ void start()
         }
         else if (SensitiveFileName(CommandPlace[0]) == "basu" && SensitiveFileName(CommandPlace[1]) == "add" && SensitiveFileName(CommandPlace[2]) == "student")
         {
+            //these are for add student
             string fu;
             string dt;
             cout << "enter first name and last name" << endl;
@@ -145,6 +156,7 @@ void start()
             cout << "enter date" << endl;
             cin >> dt;
             Date d;
+            //we try your date by 'try catch'
             try
             {
                 d = SeperateBirthday(dt);
@@ -256,6 +268,12 @@ void start()
             Save();
             CommandPlace.clear();
         }
+        else if (SensitiveFileName(CommandPlace[0]) == "basu" && SensitiveFileName(CommandPlace[1]) == "rank")
+        {
+            Rank();
+            CommandPlace.clear();
+        }
+        //this is basu help
         else if (SensitiveFileName(CommandPlace[0]) == "basu" && SensitiveFileName(CommandPlace[1]) == "help")
         {
             cout << "here we have some command that i will tell you what they to do " << endl;
@@ -306,6 +324,8 @@ void AddClass(string fileName)
         }
     }
     AC >> cn.Capacity;
+
+    //read information of students and push_back it in Data
     for (int i = 0; i < cn.Capacity; i ++)
     {
         string date;
@@ -339,7 +359,7 @@ void SelectClass(string ClsName)
             return;
         }
     }
-    cout << "there is no class named : " << ClsName << endl;
+    cout << "you don't enter class name or your input is wrong" << endl;
 }
 
 void RemoveClass(string ClsName)
@@ -348,6 +368,7 @@ void RemoveClass(string ClsName)
     {
         if (Database[i].ClassName == ClsName)
         {
+            //remove class by erase
             Database.erase(Database.begin() + i);
             cout << "Class removed successfully" << endl;
             return;
@@ -363,6 +384,7 @@ void AddStudent(string FullName, Date brth, unsigned long long int iD, float avg
     st.Birthday = brth;
     st.Grade = avg;
     st.ID = iD;
+    //seperate first name and last name
     for (int i = 0; i < FullName.length(); i ++)
     {
         if (FullName[i] != ' ')
@@ -373,9 +395,7 @@ void AddStudent(string FullName, Date brth, unsigned long long int iD, float avg
             for (i; i < FullName[i]; i ++)
             {
 
-                {
-                    st.Lastname += FullName[i];
-                }
+                st.Lastname += FullName[i];
             }
     }
     for (Class &i : Database)
@@ -422,11 +442,12 @@ void ShowClass(string Cname)
             cout << i.ClassName << endl;
             cout << i.Capacity << endl;
             cout << i.Average << endl;
+            //using setw for get more beautifull output
             for (auto j = 0; j < i.Capacity; j ++)
             {
-                cout << i.Data.at(j).Firstname << " " << i.Data.at(j).Lastname << " " << i.Data.at(j).Birthday.Year
-                     << "/" << i.Data.at(j).Birthday.Month << "/" << i.Data.at(j).Birthday.Day << " "
-                     << i.Data.at(j).Grade << " " << i.Data.at(j).ID << endl;
+                cout << left << setw(18) << i.Data.at(j).Firstname + " " + i.Data.at(j).Lastname << setw(15) << to_string(i.Data.at(j).Birthday.Year)
+                     + "/" + to_string(i.Data.at(j).Birthday.Month) + "/" + to_string(i.Data.at(j).Birthday.Day) << setw(13)
+                     << i.Data.at(j).Grade << setw(15) << i.Data.at(j).ID << endl;
             }
             return;
         }
@@ -442,11 +463,11 @@ void ShowAll()
         cout << i.ClassName << endl;
         cout << i.Capacity << endl;
         cout << i.Average << endl;
+        //using setw
         for (int j = 0; j < i.Capacity; j++)
         {
-
             cout << left << setw(18) << i.Data.at(j).Firstname + " " + i.Data.at(j).Lastname << setw(15) << to_string(i.Data.at(j).Birthday.Year)
-                 + "/" + to_string(i.Data.at(j).Birthday.Month) + "/" + to_string(i.Data.at(j).Birthday.Day) << setw(13)
+                 + "/" + to_string(i.Data.at(j).Birthday.Month) + "/" + to_string(i.Data.at(j).Birthday.Day) << setw(16)
                  << i.Data.at(j).Grade << setw(15) << i.Data.at(j).ID << endl;
         }
 
@@ -464,9 +485,9 @@ void Search(unsigned long long int iD)
             {
                 if (i.Data.at(j).ID == iD)
                 {
-                    cout << i.Data.at(j).Firstname << " " << i.Data.at(j).Lastname << " " << i.Data.at(j).Birthday.Year << "/"
-                         << i.Data.at(j).Birthday.Month << "/" << i.Data.at(j).Birthday.Day << " " <<  i.Data.at(j).Grade << " "
-                         << i.Data.at(j).ID << endl;
+                    cout << left << setw(18) << i.Data.at(j).Firstname + " " + i.Data.at(j).Lastname << setw(15) << to_string(i.Data.at(j).Birthday.Year)
+                         + "/" + to_string(i.Data.at(j).Birthday.Month) + "/" + to_string(i.Data.at(j).Birthday.Day) << setw(13)
+                         << i.Data.at(j).Grade << setw(15) << i.Data.at(j).ID << endl;
                     return;
                 }
             }
@@ -485,9 +506,9 @@ void Search(string fn, string ln)
             {
                 if (fn == i.Data.at(j).Firstname && i.Data.at(j).Lastname == ln)
                 {
-                    cout << i.Data.at(j).Firstname << " " << i.Data.at(j).Lastname << " " << i.Data.at(j).Birthday.Year << "/"
-                         << i.Data.at(j).Birthday.Month << "/" << i.Data.at(j).Birthday.Day << " " <<  i.Data.at(j).Grade << " "
-                         << i.Data.at(j).ID << endl;
+                    cout << left << setw(18) << i.Data.at(j).Firstname + " " + i.Data.at(j).Lastname << setw(15) << to_string(i.Data.at(j).Birthday.Year)
+                         + "/" + to_string(i.Data.at(j).Birthday.Month) + "/" + to_string(i.Data.at(j).Birthday.Day) << setw(13)
+                         << i.Data.at(j).Grade << setw(15) << i.Data.at(j).ID << endl;
                     return;
                 }
             }
@@ -582,8 +603,8 @@ void Save()
                 for (int i = 0; i < cls.Capacity; i++)
                 {
                     file << left << setw(18) << cls.Data.at(i).Firstname + " " + cls.Data.at(i).Lastname << setw(15) << to_string(cls.Data.at(i).Birthday.Year)
-                 + "/" + to_string(cls.Data.at(i).Birthday.Month) + "/" + to_string(cls.Data.at(i).Birthday.Day) << setw(13)
-                 << cls.Data.at(i).Grade << setw(15) << cls.Data.at(i).ID << endl;
+                         + "/" + to_string(cls.Data.at(i).Birthday.Month) + "/" + to_string(cls.Data.at(i).Birthday.Day) << setw(13)
+                         << cls.Data.at(i).Grade << setw(15) << cls.Data.at(i).ID << endl;
                 }
                 cout << "Everything saved" << endl;
                 file.close();
@@ -600,8 +621,8 @@ void Save()
             for (int i = 0; i < cls.Capacity; i++)
             {
                 file << left << setw(18) << cls.Data.at(i).Firstname + " " + cls.Data.at(i).Lastname << setw(15) << to_string(cls.Data.at(i).Birthday.Year)
-                 + "/" + to_string(cls.Data.at(i).Birthday.Month) + "/" + to_string(cls.Data.at(i).Birthday.Day) << setw(13)
-                 << cls.Data.at(i).Grade << setw(15) << cls.Data.at(i).ID << endl;
+                     + "/" + to_string(cls.Data.at(i).Birthday.Month) + "/" + to_string(cls.Data.at(i).Birthday.Day) << setw(13)
+                     << cls.Data.at(i).Grade << setw(15) << cls.Data.at(i).ID << endl;
             }
             file.close();
 
@@ -611,6 +632,7 @@ void Save()
     }
 }
 
+//this function is for average of the all of class
 float Avg(const Class &i)
 {
     float sum = 0;
@@ -622,6 +644,54 @@ float Avg(const Class &i)
     return sum / i.Capacity;
 }
 
+//this function is for rank of the students
+string Rank()
+{
+    //sorting by grade
+    for (Class &k : Database)
+    {
+        if (k.ClassName == GlobS)
+        {
+            for (int i = 0; i < k.Capacity - 1; i++)
+            {
+                for (int j = i + 1; j < k.Capacity; j++)
+                {
+                    if (k.Data.at(i).Grade < k.Data.at(j).Grade)
+                    {
+                        swap(k.Data.at(i).Grade, k.Data.at(j).Grade);
+                    }
+                }
+            }
+            //cout rank of the students
+            for (Student &g : k.Data)
+            {
+                if (g.Grade > 18)
+                {
+                    cout << g.Firstname << " " << g.Lastname << " " << g.Grade << '\t' << "A" << endl;
+                }
+                else if (g.Grade > 15 && g.Grade < 18)
+                {
+                    cout << g.Firstname << " " << g.Lastname << " " << g.Grade << '\t' <<"B" << endl;
+                }
+                else if (g.Grade > 12 && g.Grade < 15)
+                {
+                    cout << g.Firstname << " " << g.Lastname << " " << g.Grade  << '\t' << "C" << endl;
+                }
+                else if (g.Grade > 10 && g.Grade < 12)
+                {
+                    cout << g.Firstname << " " << g.Lastname << " " << g.Grade << '\t' << "D" << endl;
+                }
+                else if (g.Grade < 10)
+                {
+                    cout << g.Firstname << " " << g.Lastname << " " << g.Grade << '\t' << "E" << endl;
+                }
+            }
+        }
+    }
+}
+
+
+//this function is for lower commands except that we want
 string SensitiveFileName(string com)
 {
     for (int i = 0; i < com.length(); i ++)
