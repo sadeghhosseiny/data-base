@@ -139,13 +139,11 @@ void start()
         if (SensitiveFileName(CommandPlace[0]) == "basu" && SensitiveFileName(CommandPlace[1]) == "add" && SensitiveFileName(CommandPlace[2]) == "class")
         {
             AddClass(CommandPlace[3]);
-            cout << Database.size() << endl;
             CommandPlace.clear();
         }
         else if (SensitiveFileName(CommandPlace[0]) == "basu" && SensitiveFileName(CommandPlace[1]) == "remove" && SensitiveFileName(CommandPlace[2]) == "class")
         {
             RemoveClass(CommandPlace[3]);
-            cout << Database.size() << endl;
             CommandPlace.clear();
         }
         else if (SensitiveFileName(CommandPlace[0]) == "basu" && SensitiveFileName(CommandPlace[1]) == "add" && SensitiveFileName(CommandPlace[2]) == "student")
@@ -692,7 +690,6 @@ string Rank()
     }
 }
 
-//yooohoo
 //this function is for lower commands except that we want
 string SensitiveFileName(string com)
 {
