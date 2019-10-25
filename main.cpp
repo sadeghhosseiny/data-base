@@ -151,7 +151,7 @@ void start()
             }
             catch (...)
             {
-                cout << "You messed up!" << endl;
+                cout << "Enter date correctly" << endl;
                 continue;
             }
             float gr;
@@ -279,7 +279,7 @@ void start()
         }
         else
         {
-            cout << "We don't have thisd command" << endl;
+            cout << "We don't have this command" << endl;
             CommandPlace.clear();
         }
     }
@@ -418,6 +418,7 @@ void ShowClass(string Cname)
     {
         if (Cname == i.ClassName)
         {
+            i.Average = Avg(i);
             cout << i.ClassName << endl;
             cout << i.Capacity << endl;
             cout << i.Average << endl;
@@ -437,14 +438,16 @@ void ShowAll()
 {
     for (Class &i : Database)
     {
+        i.Average = Avg(i);
         cout << i.ClassName << endl;
         cout << i.Capacity << endl;
+        cout << i.Average << endl;
         for (int j = 0; j < i.Capacity; j++)
         {
 
-            cout << i.Data.at(j).Firstname << " " << i.Data.at(j).Lastname << " " << i.Data.at(j).Birthday.Year
-                 << "/" << i.Data.at(j).Birthday.Month << "/" << i.Data.at(j).Birthday.Day << " "
-                 << i.Data.at(j).Grade << " " << i.Data.at(j).ID << endl;
+            cout << left << setw(18) << i.Data.at(j).Firstname + " " + i.Data.at(j).Lastname << setw(15) << to_string(i.Data.at(j).Birthday.Year)
+                 + "/" + to_string(i.Data.at(j).Birthday.Month) + "/" + to_string(i.Data.at(j).Birthday.Day) << setw(13)
+                 << i.Data.at(j).Grade << setw(15) << i.Data.at(j).ID << endl;
         }
 
     }
@@ -595,8 +598,9 @@ void Save()
             file << cls.Average << endl;
             for (int i = 0; i < cls.Capacity; i++)
             {
-                file << cls.Data.at(i).Firstname << " " << cls.Data.at(i).Lastname << " " << cls.Data.at(i).Grade << " " << cls.Data.at(i).Birthday.Year
-                     << "/" << cls.Data.at(i).Birthday.Month << "/" << cls.Data.at(i).Birthday.Day << " " << cls.Data.at(i).ID << endl;
+                file << left << setw(18) << cls.Data.at(i).Firstname + " " + cls.Data.at(i).Lastname << setw(15) << to_string(cls.Data.at(i).Birthday.Year)
+                 + "/" + to_string(cls.Data.at(i).Birthday.Month) + "/" + to_string(cls.Data.at(i).Birthday.Day) << setw(13)
+                 << cls.Data.at(i).Grade << setw(15) << cls.Data.at(i).ID << endl;
             }
             file.close();
 
@@ -616,6 +620,7 @@ float Avg(const Class &i)
     }
     return sum / i.Capacity;
 }
+
 string SensitiveFileName(string com)
 {
     for (int i = 0; i < com.length(); i ++)
