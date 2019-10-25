@@ -581,8 +581,9 @@ void Save()
                 file << cls.Average << endl;
                 for (int i = 0; i < cls.Capacity; i++)
                 {
-                    file << cls.Data.at(i).Firstname << " " << cls.Data.at(i).Lastname << " " << cls.Data.at(i).Grade << " " << cls.Data.at(i).Birthday.Year
-                         << "/" << cls.Data.at(i).Birthday.Month << "/" << cls.Data.at(i).Birthday.Day << " " << cls.Data.at(i).ID << endl;
+                    file << left << setw(18) << cls.Data.at(i).Firstname + " " + cls.Data.at(i).Lastname << setw(15) << to_string(cls.Data.at(i).Birthday.Year)
+                 + "/" + to_string(cls.Data.at(i).Birthday.Month) + "/" + to_string(cls.Data.at(i).Birthday.Day) << setw(13)
+                 << cls.Data.at(i).Grade << setw(15) << cls.Data.at(i).ID << endl;
                 }
                 cout << "Everything saved" << endl;
                 file.close();
